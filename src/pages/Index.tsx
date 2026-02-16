@@ -48,8 +48,10 @@ const Index = () => {
         <RecipesSection recipes={recipes} onAdd={() => setShowAddRecipe(true)} />
         <AboutSection />
         <ContactSection />
-        <footer className="py-6 text-center text-xs text-muted-foreground font-sans border-t border-border">
-          © {new Date().getFullYear()} Thejaswini. All rights reserved.
+        <footer className="py-10 text-center border-t border-border">
+          <p className="text-xs text-muted-foreground font-sans tracking-wider">
+            © {new Date().getFullYear()} Thejaswini · Built with intention
+          </p>
         </footer>
       </div>
 

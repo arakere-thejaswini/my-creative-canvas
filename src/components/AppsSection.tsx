@@ -1,5 +1,7 @@
 import { AppProject } from "@/data/content";
-import { ExternalLink, Github } from "lucide-react";
+import { ExternalLink, Github, ArrowUpRight } from "lucide-react";
+import { motion } from "framer-motion";
+import SectionReveal, { StaggerItem } from "@/components/SectionReveal";
 
 interface AppsSectionProps {
   projects: AppProject[];
@@ -8,57 +10,88 @@ interface AppsSectionProps {
 
 const AppsSection = ({ projects, onAdd }: AppsSectionProps) => {
   return (
-    <section id="apps" className="py-20">
+    <section id="apps" className="py-24">
       <div className="mx-auto max-w-5xl px-6">
-        <div className="flex items-center justify-between mb-12">
-          <h2 className="text-3xl font-serif-bold">Things I've Built</h2>
-          <button
-            onClick={onAdd}
-            className="text-sm font-sans bg-primary text-primary-foreground px-4 py-2 rounded-lg hover:opacity-90 transition-opacity"
-          >
-            + Add App
-          </button>
-        </div>
+        <SectionReveal>
+          <div className="flex items-end justify-between mb-16">
+            <div>
+              <p className="text-xs uppercase tracking-[0.25em] text-muted-foreground font-sans mb-3">Portfolio</p>
+              <h2 className="text-4xl md:text-5xl font-serif-bold">Things I've Built</h2>
+            </div>
+            <motion.button
+              onClick={onAdd}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className="text-sm font-sans bg-foreground text-background px-5 py-2.5 rounded-full hover:opacity-90 transition-opacity"
+            >
+              + Add App
+            </motion.button>
+          </div>
+        </SectionReveal>
+
         <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-          {projects.map((project) => (
-            <article key={project.id} className="group bg-card rounded-xl overflow-hidden border border-border hover:shadow-lg transition-shadow">
-              <div className="aspect-video bg-accent overflow-hidden">
-                {project.image ? (
-                  <img
-                    src={project.image}
-                    alt={project.title}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                  />
-                ) : (
-                  <div className="w-full h-full flex items-center justify-center text-muted-foreground text-sm">
-                    No image
-                  </div>
-                )}
-              </div>
-              <div className="p-5">
-                <h3 className="text-lg font-serif-bold mb-2">{project.title}</h3>
-                <p className="text-sm text-muted-foreground mb-4 leading-relaxed">{project.description}</p>
-                <div className="flex flex-wrap gap-2 mb-4">
-                  {project.tools.map((tool) => (
-                    <span key={tool} className="text-xs bg-tag text-tag-foreground px-3 py-1 rounded-full">
-                      {tool}
-                    </span>
-                  ))}
-                </div>
-                <div className="flex gap-3">
+          {projects.map((project, i) => (
+            <StaggerItem key={project.id} index={i}>
+              <motion.article
+                className="group bg-card rounded-2xl overflow-hidden border border-border relative"
+                whileHover={{ y: -6 }}
+                transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+              >
+                <div className="aspect-[4/3] bg-accent overflow-hidden relative">
+                  {project.image ? (
+                    <img
+                      src={project.image}
+                      alt={project.title}
+                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-out"
+                    />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center text-muted-foreground text-sm font-sans">
+                      No image
+                    </div>
+                  )}
+                  {/* Hover overlay */}
+                  <div className="absolute inset-0 bg-foreground/0 group-hover:bg-foreground/10 transition-colors duration-500" />
+                  
                   {project.liveUrl && (
-                    <a href={project.liveUrl} target="_blank" rel="noopener noreferrer" className="text-sm text-foreground hover:text-muted-foreground flex items-center gap-1 transition-colors">
-                      <ExternalLink size={14} /> View
-                    </a>
-                  )}
-                  {project.githubUrl && (
-                    <a href={project.githubUrl} target="_blank" rel="noopener noreferrer" className="text-sm text-foreground hover:text-muted-foreground flex items-center gap-1 transition-colors">
-                      <Github size={14} /> Code
-                    </a>
+                    <motion.a
+                      href={project.liveUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="absolute top-4 right-4 bg-background/90 backdrop-blur-sm text-foreground p-2.5 rounded-full opacity-0 group-hover:opacity-100 transition-all duration-300 hover:bg-background"
+                      whileHover={{ scale: 1.1 }}
+                    >
+                      <ArrowUpRight size={16} />
+                    </motion.a>
                   )}
                 </div>
-              </div>
-            </article>
+                
+                <div className="p-6">
+                  <h3 className="text-lg font-serif-bold mb-2">{project.title}</h3>
+                  <p className="text-sm text-muted-foreground mb-5 leading-relaxed font-sans line-clamp-2">{project.description}</p>
+                  
+                  <div className="flex flex-wrap gap-2 mb-5">
+                    {project.tools.map((tool) => (
+                      <span key={tool} className="text-[11px] uppercase tracking-wider bg-accent text-accent-foreground px-3 py-1 rounded-full font-sans">
+                        {tool}
+                      </span>
+                    ))}
+                  </div>
+                  
+                  <div className="flex gap-3 pt-4 border-t border-border">
+                    {project.liveUrl && (
+                      <a href={project.liveUrl} target="_blank" rel="noopener noreferrer" className="text-xs text-muted-foreground hover:text-foreground flex items-center gap-1.5 transition-colors font-sans">
+                        <ExternalLink size={12} /> Live Demo
+                      </a>
+                    )}
+                    {project.githubUrl && (
+                      <a href={project.githubUrl} target="_blank" rel="noopener noreferrer" className="text-xs text-muted-foreground hover:text-foreground flex items-center gap-1.5 transition-colors font-sans">
+                        <Github size={12} /> Source
+                      </a>
+                    )}
+                  </div>
+                </div>
+              </motion.article>
+            </StaggerItem>
           ))}
         </div>
       </div>
