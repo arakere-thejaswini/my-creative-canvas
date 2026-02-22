@@ -1,9 +1,12 @@
 import { motion } from "framer-motion";
 
-const HeroSection = () => {
+interface HeroSectionProps {
+  onNavigate: (section: string) => void;
+}
+
+const HeroSection = ({ onNavigate }: HeroSectionProps) => {
   return (
-    <section id="hero" className="relative min-h-[90vh] flex items-center bg-hero overflow-hidden">
-      {/* Decorative grid */}
+    <section id="hero" className="relative min-h-[85vh] flex items-center bg-hero overflow-hidden">
       <div className="absolute inset-0 opacity-[0.03]" style={{
         backgroundImage: 'linear-gradient(hsl(var(--foreground)) 1px, transparent 1px), linear-gradient(90deg, hsl(var(--foreground)) 1px, transparent 1px)',
         backgroundSize: '60px 60px'
@@ -28,29 +31,14 @@ const HeroSection = () => {
               animate={{ opacity: 1 }}
               transition={{ duration: 0.5, delay: 0.2 }}
             >
-              <motion.span
-                className="font-sans-bold block"
-                initial={{ y: 80, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                transition={{ duration: 0.8, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
-              >
+              <motion.span className="font-sans-bold block" initial={{ y: 80, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ duration: 0.8, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}>
                 Software Engineer
               </motion.span>
-              <motion.span
-                className="block mt-2"
-                initial={{ y: 80, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                transition={{ duration: 0.8, delay: 0.45, ease: [0.22, 1, 0.36, 1] }}
-              >
+              <motion.span className="block mt-2" initial={{ y: 80, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ duration: 0.8, delay: 0.45, ease: [0.22, 1, 0.36, 1] }}>
                 <span className="font-serif-italic">Creating</span>{" "}
                 <span className="font-serif-bold">things I love,</span>
               </motion.span>
-              <motion.span
-                className="font-serif-bold block mt-2"
-                initial={{ y: 80, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                transition={{ duration: 0.8, delay: 0.6, ease: [0.22, 1, 0.36, 1] }}
-              >
+              <motion.span className="font-serif-bold block mt-2" initial={{ y: 80, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ duration: 0.8, delay: 0.6, ease: [0.22, 1, 0.36, 1] }}>
                 one project at a time
               </motion.span>
             </motion.h1>
@@ -72,13 +60,13 @@ const HeroSection = () => {
             transition={{ duration: 0.8, delay: 1.1, ease: [0.22, 1, 0.36, 1] }}
           >
             <button
-              onClick={() => document.getElementById("apps")?.scrollIntoView({ behavior: "smooth" })}
+              onClick={() => onNavigate("apps")}
               className="font-sans text-sm border border-foreground text-foreground px-6 py-3 rounded-full hover:bg-foreground hover:text-background transition-all duration-300"
             >
               Explore My Work
             </button>
             <button
-              onClick={() => document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" })}
+              onClick={() => onNavigate("contact")}
               className="font-sans text-sm text-muted-foreground px-6 py-3 rounded-full hover:text-foreground transition-colors duration-300"
             >
               Get in Touch →
@@ -86,21 +74,14 @@ const HeroSection = () => {
           </motion.div>
         </div>
 
-        {/* Floating accent shape */}
         <motion.div
           className="absolute right-10 top-1/3 w-72 h-72 rounded-full bg-accent/30 blur-3xl"
-          animate={{ 
-            y: [0, -20, 0],
-            scale: [1, 1.05, 1],
-          }}
+          animate={{ y: [0, -20, 0], scale: [1, 1.05, 1] }}
           transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
         />
         <motion.div
           className="absolute right-32 bottom-1/4 w-40 h-40 rounded-full bg-secondary/40 blur-2xl"
-          animate={{ 
-            y: [0, 15, 0],
-            x: [0, -10, 0],
-          }}
+          animate={{ y: [0, 15, 0], x: [0, -10, 0] }}
           transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
         />
       </div>

@@ -7,20 +7,17 @@ import { ChevronDown } from "lucide-react";
 interface EssaysSectionProps {
   essays: Essay[];
   onAdd: () => void;
+  isAdmin: boolean;
 }
 
-const EssaysSection = ({ essays, onAdd }: EssaysSectionProps) => {
+const EssaysSection = ({ essays, onAdd, isAdmin }: EssaysSectionProps) => {
   const [expandedId, setExpandedId] = useState<string | null>(null);
 
   return (
-    <section id="essays" className="py-24 bg-card">
+    <section className="pb-24">
       <div className="mx-auto max-w-5xl px-6">
-        <SectionReveal>
-          <div className="flex items-end justify-between mb-16">
-            <div>
-              <p className="text-xs uppercase tracking-[0.25em] text-muted-foreground font-sans mb-3">Writing</p>
-              <h2 className="text-4xl md:text-5xl font-serif-bold">Essays</h2>
-            </div>
+        {isAdmin && (
+          <div className="flex justify-end mb-8">
             <motion.button
               onClick={onAdd}
               whileHover={{ scale: 1.05 }}
@@ -30,22 +27,20 @@ const EssaysSection = ({ essays, onAdd }: EssaysSectionProps) => {
               + Add Essay
             </motion.button>
           </div>
-        </SectionReveal>
+        )}
 
         {essays.length === 0 ? (
-          <SectionReveal>
-            <div className="text-center py-20 border-2 border-dashed border-border rounded-2xl">
-              <p className="text-muted-foreground font-sans text-sm">No essays yet.</p>
-              <p className="text-muted-foreground/60 font-sans text-xs mt-1">Click "Add Essay" to share your thoughts.</p>
-            </div>
-          </SectionReveal>
+          <div className="text-center py-20 border-2 border-dashed border-border rounded-2xl">
+            <p className="text-muted-foreground font-sans text-sm">No essays yet.</p>
+            {!isAdmin && <p className="text-muted-foreground/60 font-sans text-xs mt-1">Check back soon!</p>}
+          </div>
         ) : (
           <div className="space-y-4">
             {essays.map((essay, i) => (
               <StaggerItem key={essay.id} index={i}>
                 <motion.article
                   layout
-                  className="bg-background rounded-2xl border border-border overflow-hidden cursor-pointer group"
+                  className="bg-card rounded-2xl border border-border overflow-hidden cursor-pointer group"
                   onClick={() => setExpandedId(expandedId === essay.id ? null : essay.id)}
                   whileHover={{ x: 4 }}
                   transition={{ duration: 0.2 }}
@@ -64,7 +59,6 @@ const EssaysSection = ({ essays, onAdd }: EssaysSectionProps) => {
                         <ChevronDown size={18} />
                       </motion.div>
                     </div>
-
                     <AnimatePresence>
                       {expandedId === essay.id && (
                         <motion.div
@@ -82,7 +76,6 @@ const EssaysSection = ({ essays, onAdd }: EssaysSectionProps) => {
                         </motion.div>
                       )}
                     </AnimatePresence>
-
                     {expandedId !== essay.id && essay.content.length > 100 && (
                       <p className="mt-4 text-sm text-muted-foreground/60 font-sans line-clamp-1">
                         {essay.content.substring(0, 120)}...
