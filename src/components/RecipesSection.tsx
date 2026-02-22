@@ -7,20 +7,17 @@ import { ChevronDown } from "lucide-react";
 interface RecipesSectionProps {
   recipes: Recipe[];
   onAdd: () => void;
+  isAdmin: boolean;
 }
 
-const RecipesSection = ({ recipes, onAdd }: RecipesSectionProps) => {
+const RecipesSection = ({ recipes, onAdd, isAdmin }: RecipesSectionProps) => {
   const [expandedId, setExpandedId] = useState<string | null>(null);
 
   return (
-    <section id="recipes" className="py-24 bg-card">
+    <section className="pb-24">
       <div className="mx-auto max-w-5xl px-6">
-        <SectionReveal>
-          <div className="flex items-end justify-between mb-16">
-            <div>
-              <p className="text-xs uppercase tracking-[0.25em] text-muted-foreground font-sans mb-3">Kitchen</p>
-              <h2 className="text-4xl md:text-5xl font-serif-bold">Recipes I've Tried</h2>
-            </div>
+        {isAdmin && (
+          <div className="flex justify-end mb-8">
             <motion.button
               onClick={onAdd}
               whileHover={{ scale: 1.05 }}
@@ -30,31 +27,25 @@ const RecipesSection = ({ recipes, onAdd }: RecipesSectionProps) => {
               + Add Recipe
             </motion.button>
           </div>
-        </SectionReveal>
+        )}
 
         {recipes.length === 0 ? (
-          <SectionReveal>
-            <div className="text-center py-20 border-2 border-dashed border-border rounded-2xl">
-              <p className="text-muted-foreground font-sans text-sm">No recipes yet.</p>
-              <p className="text-muted-foreground/60 font-sans text-xs mt-1">Click "Add Recipe" to share your culinary adventures.</p>
-            </div>
-          </SectionReveal>
+          <div className="text-center py-20 border-2 border-dashed border-border rounded-2xl">
+            <p className="text-muted-foreground font-sans text-sm">No recipes yet.</p>
+            {!isAdmin && <p className="text-muted-foreground/60 font-sans text-xs mt-1">Check back soon!</p>}
+          </div>
         ) : (
           <div className="grid gap-6 md:grid-cols-2">
             {recipes.map((recipe, i) => (
               <StaggerItem key={recipe.id} index={i}>
                 <motion.article
-                  className="bg-background rounded-2xl overflow-hidden border border-border group"
+                  className="bg-card rounded-2xl overflow-hidden border border-border group"
                   whileHover={{ y: -4 }}
                   transition={{ duration: 0.3 }}
                 >
                   {recipe.image && (
                     <div className="aspect-[16/10] overflow-hidden relative">
-                      <img
-                        src={recipe.image}
-                        alt={recipe.title}
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
-                      />
+                      <img src={recipe.image} alt={recipe.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out" />
                     </div>
                   )}
                   <div className="p-6">
@@ -67,14 +58,10 @@ const RecipesSection = ({ recipes, onAdd }: RecipesSectionProps) => {
                       className="text-xs text-muted-foreground font-sans flex items-center gap-1 hover:text-foreground transition-colors mt-2"
                     >
                       {expandedId === recipe.id ? "Hide" : "View recipe"}
-                      <motion.span
-                        animate={{ rotate: expandedId === recipe.id ? 180 : 0 }}
-                        transition={{ duration: 0.3 }}
-                      >
+                      <motion.span animate={{ rotate: expandedId === recipe.id ? 180 : 0 }} transition={{ duration: 0.3 }}>
                         <ChevronDown size={12} />
                       </motion.span>
                     </button>
-
                     <AnimatePresence>
                       {expandedId === recipe.id && (
                         <motion.div

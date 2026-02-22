@@ -5,18 +5,15 @@ import SectionReveal, { StaggerItem } from "@/components/SectionReveal";
 interface ArtSectionProps {
   paintings: Painting[];
   onAdd: () => void;
+  isAdmin: boolean;
 }
 
-const ArtSection = ({ paintings, onAdd }: ArtSectionProps) => {
+const ArtSection = ({ paintings, onAdd, isAdmin }: ArtSectionProps) => {
   return (
-    <section id="art" className="py-24">
+    <section className="pb-24">
       <div className="mx-auto max-w-5xl px-6">
-        <SectionReveal>
-          <div className="flex items-end justify-between mb-16">
-            <div>
-              <p className="text-xs uppercase tracking-[0.25em] text-muted-foreground font-sans mb-3">Gallery</p>
-              <h2 className="text-4xl md:text-5xl font-serif-bold">Art & Paintings</h2>
-            </div>
+        {isAdmin && (
+          <div className="flex justify-end mb-8">
             <motion.button
               onClick={onAdd}
               whileHover={{ scale: 1.05 }}
@@ -26,15 +23,13 @@ const ArtSection = ({ paintings, onAdd }: ArtSectionProps) => {
               + Add Painting
             </motion.button>
           </div>
-        </SectionReveal>
+        )}
 
         {paintings.length === 0 ? (
-          <SectionReveal>
-            <div className="text-center py-20 border-2 border-dashed border-border rounded-2xl">
-              <p className="text-muted-foreground font-sans text-sm">No paintings yet.</p>
-              <p className="text-muted-foreground/60 font-sans text-xs mt-1">Click "Add Painting" to showcase your art.</p>
-            </div>
-          </SectionReveal>
+          <div className="text-center py-20 border-2 border-dashed border-border rounded-2xl">
+            <p className="text-muted-foreground font-sans text-sm">No paintings yet.</p>
+            {!isAdmin && <p className="text-muted-foreground/60 font-sans text-xs mt-1">Check back soon!</p>}
+          </div>
         ) : (
           <div className="columns-2 md:columns-3 gap-5 space-y-5">
             {paintings.map((painting, i) => (
@@ -49,7 +44,6 @@ const ArtSection = ({ paintings, onAdd }: ArtSectionProps) => {
                     alt={painting.title}
                     className="w-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
                   />
-                  {/* Hover overlay with info */}
                   <motion.div
                     className="absolute inset-0 bg-gradient-to-t from-foreground/80 via-foreground/20 to-transparent flex items-end p-5"
                     initial={{ opacity: 0 }}

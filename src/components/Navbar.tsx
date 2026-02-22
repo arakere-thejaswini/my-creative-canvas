@@ -36,7 +36,6 @@ const Navbar = ({ onNavigate }: NavbarProps) => {
           Thejaswini
         </button>
         
-        {/* Desktop */}
         <div className="hidden md:flex gap-1">
           {links.map((link, i) => (
             <motion.button
@@ -52,16 +51,11 @@ const Navbar = ({ onNavigate }: NavbarProps) => {
           ))}
         </div>
 
-        {/* Mobile toggle */}
-        <button
-          className="md:hidden text-foreground p-2"
-          onClick={() => setMobileOpen(!mobileOpen)}
-        >
+        <button className="md:hidden text-foreground p-2" onClick={() => setMobileOpen(!mobileOpen)}>
           {mobileOpen ? <X size={20} /> : <Menu size={20} />}
         </button>
       </div>
 
-      {/* Mobile menu */}
       <AnimatePresence>
         {mobileOpen && (
           <motion.div
